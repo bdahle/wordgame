@@ -1,5 +1,4 @@
-import { WritePropExpr } from '@angular/compiler';
-import { Component, HostListener } from '@angular/core';
+import { Component, ElementRef, HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -7,9 +6,11 @@ import { Component, HostListener } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+  constructor(private elementRef: ElementRef) { }
+
+
   title = 'word-game'
 
-  // word = ['h', 'u', 's']
   word = ['h', 'u', 's']
 
   @HostListener('window:keydown', ['$event'])
@@ -25,6 +26,7 @@ export class AppComponent {
 
     if (this.word.length == 0) {
       console.log("Du vant!")
+      this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor = 'green'
     }
   }
 

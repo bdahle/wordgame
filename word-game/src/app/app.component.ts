@@ -1,4 +1,5 @@
 import { Component, ElementRef, HostListener } from '@angular/core';
+import { stringify } from 'querystring';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +12,8 @@ export class AppComponent {
 
   title = 'word-game'
 
-  word = ['h', 'u', 's']
+  // word = ['h', 'u', 's']
+  word = "hus"
   tryCounter = 0;
 
   @HostListener('window:keydown', ['$event'])
@@ -19,9 +21,13 @@ export class AppComponent {
     console.log(event)
     this.tryCounter++
 
-    for (const [i, char] of this.word.entries()) {
-      if (char == event.key) {
-        this.word.splice(i, 1)
+    // for (const [i, char] of this.word.entries()) {
+    // for (let i in this.word) {
+    for (let i = 0; i < this.word.length; i++) {
+
+      if (this.word[i] == event.key) {
+        // this.word.slice(i, 1)
+        this.word = this.word.slice(0, i) + this.word.slice(i + 1)
         this.tryCounter--
       }
     }
@@ -36,7 +42,4 @@ export class AppComponent {
       this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor = 'red'
     }
   }
-
-
-
 }

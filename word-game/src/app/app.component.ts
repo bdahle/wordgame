@@ -1,5 +1,6 @@
 //TODO ignorere taster som ikke er bokstaver
 //TODO virker med store bokstaver
+//TODO autogenerer initial guessedWord
 
 import { Component, ElementRef, HostListener } from '@angular/core';
 
@@ -65,7 +66,6 @@ export class AppComponent {
         this.remainingWord = this.setCharAt(this.remainingWord, i, " ")
         this.tryCounter--
 
-        // this.remainingWord = this.replaceChar(this.remainingWord, "X", i)
       } else if (this.guessedWord[i] == event.key) {
         this.tryCounter--
 
@@ -79,12 +79,3 @@ export class AppComponent {
 
 
 }
-
-    // for (let i = 0; i < this.remainingWord.length; i++) {
-    //   if (this.remainingWord[i] == event.key) {
-    //     this.guessedWord = this.guessedWord.slice(0, i) + this.word[i] + this.guessedWord.slice(i + 1)
-    //     this.remainingWord = this.remainingWord.slice(0, i) + this.remainingWord.slice(i + 1)
-    //     this.tryCounter--
-    //   }
-    // }
-    // this.updateWords()

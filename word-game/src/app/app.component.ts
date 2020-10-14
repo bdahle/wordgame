@@ -1,9 +1,10 @@
-//TODO ignorere taster som ikke er bokstaver
-//TODO virker med store bokstaver
-//TODO autogenerer initial guessedWord
-//TODO logg hvilke bokstaver som er forsoekt, skal ikke faa feil for aa gjette det samme mange ganger
-//TODO vis tastatur paa skjermen? 
-//eller bare vis bokstaver som er forsoekt?
+//insert spaces med pipes?
+//TODO flash groent naar trykker paa en bokstav man allerede har? og naar gjetter riktig, og roedt naar feil
+//gjoer hele ordet groent naar har vunnet?
+//TODO nytt ord knapp?
+//TODO sentrer vertikalt
+//TODO flere ord, eventuelt hente eksternt
+//TODO stop from typing when has won
 
 import { Component, ElementRef, HostListener } from '@angular/core';
 
@@ -16,13 +17,16 @@ export class AppComponent {
   constructor(private elementRef: ElementRef) { }
   title = 'word-game'
 
-  word = "solnedgangen"
-  guessedWord = "  l   g  g  "
-  remainingWord = ""
-  tryCounter = 0;
+  word: String = "methylamine"
+  guessedWord: String = ""
+  remainingWord: String = ""
+  triedWrongLetters: String = ""
+  tryCounter: number = 0;
+  hasGuessedWord: boolean = false
 
   ngOnInit(): void {
-    this.setRemainingWord()
+    this.setInitialGuessedWord()
+    this.setInitialRemainingWord()
     this.logWords()
   }
 
@@ -32,7 +36,18 @@ export class AppComponent {
     console.log("REMAIN", this.remainingWord)
   }
 
-  setRemainingWord() {
+  setInitialGuessedWord() {
+    let firstChar = this.word[0]
+    for (let i = 0; i < this.word.length; i++) {
+      if (this.word[i] == firstChar) {
+        this.guessedWord = this.guessedWord.concat(firstChar)
+      } else {
+        this.guessedWord = this.guessedWord.concat(" ")
+      }
+    }
+  }
+
+  setInitialRemainingWord() {
     for (let i = 0; i < this.word.length; i++) {
       if (this.guessedWord[i] == this.word[i]) {
         this.remainingWord = this.remainingWord.concat(" ")
@@ -44,11 +59,12 @@ export class AppComponent {
 
   hasWonOrLost() {
     if (this.guessedWord == this.word) {
+      this.hasGuessedWord = true
       console.log("Du vant!")
-      this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor = 'green'
+      this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor = "#5FAD41"
     } else if (this.tryCounter >= 5) {
       console.log("Du tapte")
-      this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor = 'red'
+      this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor = "#D00000"
     }
   }
 
@@ -57,28 +73,41 @@ export class AppComponent {
     return str.substring(0, index) + chr + str.substring(index + 1);
   }
 
-  @HostListener('window:keydown', ['$event'])
+  @HostListener('window:keypress', ['$event'])
   keyEvent(event: KeyboardEvent) {
-    console.log(event)
-    this.tryCounter++
+    let key = event.key.toLowerCase()
+    if (!this.hasGuessedWord && /[a-z]/.test(key)) {
+      let newAndWrongGuess: boolean = true;
 
+      for (let i = 0; i < this.word.length; i++) { //endre til word?
+        //Correct guess?
+        if (key == this.remainingWord[i]) {
 
-    for (let i = 0; i < this.remainingWord.length; i++) {
-      if (this.remainingWord[i] == event.key) {
-        this.guessedWord = this.setCharAt(this.guessedWord, i, this.remainingWord[i])
-        this.remainingWord = this.setCharAt(this.remainingWord, i, " ")
-        this.tryCounter--
+          this.guessedWord = this.setCharAt(this.guessedWord, i, this.remainingWord[i])
+          this.remainingWord = this.setCharAt(this.remainingWord, i, " ")
+          newAndWrongGuess = false
+        }
+        //Already guessed?
+        else if (key == this.guessedWord[i]) {
 
-      } else if (this.guessedWord[i] == event.key) {
-        this.tryCounter--
-
+          newAndWrongGuess = false
+        }
       }
+
+      //Already tried this letter?
+      for (let i = 0; i < this.triedWrongLetters.length; i++) {
+        if (key == this.triedWrongLetters[i]) {
+          newAndWrongGuess = false
+        }
+      }
+
+      if (newAndWrongGuess) {
+        this.triedWrongLetters = this.triedWrongLetters.concat(key)
+        this.tryCounter++
+      }
+
+      this.logWords()
+      this.hasWonOrLost()
     }
-
-
-    this.logWords()
-    this.hasWonOrLost()
   }
-
-
 }

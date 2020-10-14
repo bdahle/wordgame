@@ -3,6 +3,8 @@
 //gjoer hele ordet groent naar har vunnet?
 //TODO nytt ord knapp?
 //TODO sentrer vertikalt
+//TODO flere ord, eventuelt hente eksternt
+//TODO endre farger
 
 import { Component, ElementRef, HostListener } from '@angular/core';
 
@@ -57,10 +59,10 @@ export class AppComponent {
   hasWonOrLost() {
     if (this.guessedWord == this.word) {
       console.log("Du vant!")
-      this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor = 'green'
+      this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor = "#5FAD41"
     } else if (this.tryCounter >= 5) {
       console.log("Du tapte")
-      this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor = 'red'
+      this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor = "#D00000"
     }
   }
 

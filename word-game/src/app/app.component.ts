@@ -4,7 +4,7 @@
 //TODO nytt ord knapp?
 //TODO sentrer vertikalt
 //TODO flere ord, eventuelt hente eksternt
-//TODO endre farger
+//TODO stop from typing when has won
 
 import { Component, ElementRef, HostListener } from '@angular/core';
 
@@ -22,6 +22,7 @@ export class AppComponent {
   remainingWord: String = ""
   triedWrongLetters: String = ""
   tryCounter: number = 0;
+  hasGuessedWord: boolean = false
 
   ngOnInit(): void {
     this.setInitialGuessedWord()
@@ -58,6 +59,7 @@ export class AppComponent {
 
   hasWonOrLost() {
     if (this.guessedWord == this.word) {
+      this.hasGuessedWord = true
       console.log("Du vant!")
       this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor = "#5FAD41"
     } else if (this.tryCounter >= 5) {
@@ -74,7 +76,7 @@ export class AppComponent {
   @HostListener('window:keypress', ['$event'])
   keyEvent(event: KeyboardEvent) {
     let key = event.key.toLowerCase()
-    if (/[a-z]/.test(key)) {
+    if (!this.hasGuessedWord && /[a-z]/.test(key)) {
       let newAndWrongGuess: boolean = true;
 
       for (let i = 0; i < this.word.length; i++) { //endre til word?

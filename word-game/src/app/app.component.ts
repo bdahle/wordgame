@@ -19,6 +19,7 @@ export class AppComponent {
   word = "solnedgangen"
   guessedWord = "  l   g  g  "
   remainingWord = ""
+  triedWrongLetters = ""
   tryCounter = 0;
 
   ngOnInit(): void {
@@ -60,25 +61,25 @@ export class AppComponent {
   @HostListener('window:keydown', ['$event'])
   keyEvent(event: KeyboardEvent) {
     console.log(event)
-    this.tryCounter++
+    let newAndWrongGuess: boolean = true;
 
-
-    for (let i = 0; i < this.remainingWord.length; i++) {
-      if (this.remainingWord[i] == event.key) {
+    for (let i = 0; i < this.remainingWord.length; i++) { //endre til word?
+      if (event.key == this.remainingWord[i]) {
         this.guessedWord = this.setCharAt(this.guessedWord, i, this.remainingWord[i])
         this.remainingWord = this.setCharAt(this.remainingWord, i, " ")
-        this.tryCounter--
+        newAndWrongGuess = false
 
       } else if (this.guessedWord[i] == event.key) {
-        this.tryCounter--
-
+        newAndWrongGuess = false
       }
     }
 
+    if (newAndWrongGuess) {
+      this.triedWrongLetters = this.triedWrongLetters.concat(event.key + " ")
+      this.tryCounter++
+    }
 
     this.logWords()
     this.hasWonOrLost()
   }
-
-
 }

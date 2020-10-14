@@ -1,10 +1,8 @@
-//TODO ignorere taster som ikke er bokstaver
-//TODO virker med store bokstaver
-//TODO autogenerer initial guessedWord
-//TODO logg hvilke bokstaver som er forsoekt, skal ikke faa feil for aa gjette det samme mange ganger
 //insert spaces med pipes?
 //TODO flash groent naar trykker paa en bokstav man allerede har? og naar gjetter riktig, og roedt naar feil
+//gjoer hele ordet groent naar har vunnet?
 //TODO nytt ord knapp?
+//TODO sentrer vertikalt
 
 import { Component, ElementRef, HostListener } from '@angular/core';
 
@@ -17,11 +15,11 @@ export class AppComponent {
   constructor(private elementRef: ElementRef) { }
   title = 'word-game'
 
-  word = "oisann"
-  guessedWord = ""
-  remainingWord = ""
-  triedWrongLetters = ""
-  tryCounter = 0;
+  word: String = "methylamine"
+  guessedWord: String = ""
+  remainingWord: String = ""
+  triedWrongLetters: String = ""
+  tryCounter: number = 0;
 
   ngOnInit(): void {
     this.setInitialGuessedWord()
@@ -76,7 +74,6 @@ export class AppComponent {
     let key = event.key.toLowerCase()
     if (/[a-z]/.test(key)) {
       let newAndWrongGuess: boolean = true;
-
 
       for (let i = 0; i < this.word.length; i++) { //endre til word?
         //Correct guess?

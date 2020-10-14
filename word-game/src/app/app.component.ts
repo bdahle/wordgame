@@ -5,6 +5,7 @@
 //TODO vis tastatur paa skjermen? 
 //eller bare vis bokstaver som er forsoekt?
 //insert spaces med pipes?
+//TODO flash groent naar trykker paa en bokstav man allerede har?
 
 import { Component, ElementRef, HostListener } from '@angular/core';
 

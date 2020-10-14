@@ -4,6 +4,7 @@
 //TODO logg hvilke bokstaver som er forsoekt, skal ikke faa feil for aa gjette det samme mange ganger
 //TODO vis tastatur paa skjermen? 
 //eller bare vis bokstaver som er forsoekt?
+//insert spaces med pipes?
 
 import { Component, ElementRef, HostListener } from '@angular/core';
 
@@ -63,19 +64,31 @@ export class AppComponent {
     console.log(event)
     let newAndWrongGuess: boolean = true;
 
+
     for (let i = 0; i < this.remainingWord.length; i++) { //endre til word?
+      //Correct guess?
       if (event.key == this.remainingWord[i]) {
+
         this.guessedWord = this.setCharAt(this.guessedWord, i, this.remainingWord[i])
         this.remainingWord = this.setCharAt(this.remainingWord, i, " ")
         newAndWrongGuess = false
+      }
+      //Already guessed?
+      else if (event.key == this.guessedWord[i]) {
 
-      } else if (this.guessedWord[i] == event.key) {
+        newAndWrongGuess = false
+      }
+    }
+
+    //Already tried this letter?
+    for (let i = 0; i < this.triedWrongLetters.length; i++) {
+      if (event.key == this.triedWrongLetters[i]) {
         newAndWrongGuess = false
       }
     }
 
     if (newAndWrongGuess) {
-      this.triedWrongLetters = this.triedWrongLetters.concat(event.key + " ")
+      this.triedWrongLetters = this.triedWrongLetters.concat(event.key)
       this.tryCounter++
     }
 

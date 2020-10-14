@@ -2,10 +2,9 @@
 //TODO virker med store bokstaver
 //TODO autogenerer initial guessedWord
 //TODO logg hvilke bokstaver som er forsoekt, skal ikke faa feil for aa gjette det samme mange ganger
-//TODO vis tastatur paa skjermen? 
-//eller bare vis bokstaver som er forsoekt?
 //insert spaces med pipes?
-//TODO flash groent naar trykker paa en bokstav man allerede har?
+//TODO flash groent naar trykker paa en bokstav man allerede har? og naar gjetter riktig, og roedt naar feil
+//TODO nytt ord knapp?
 
 import { Component, ElementRef, HostListener } from '@angular/core';
 
@@ -18,14 +17,15 @@ export class AppComponent {
   constructor(private elementRef: ElementRef) { }
   title = 'word-game'
 
-  word = "solnedgangen"
-  guessedWord = "  l   g  g  "
+  word = "oisann"
+  guessedWord = ""
   remainingWord = ""
   triedWrongLetters = ""
   tryCounter = 0;
 
   ngOnInit(): void {
-    this.setRemainingWord()
+    this.setInitialGuessedWord()
+    this.setInitialRemainingWord()
     this.logWords()
   }
 
@@ -35,7 +35,18 @@ export class AppComponent {
     console.log("REMAIN", this.remainingWord)
   }
 
-  setRemainingWord() {
+  setInitialGuessedWord() {
+    let firstChar = this.word[0]
+    for (let i = 0; i < this.word.length; i++) {
+      if (this.word[i] == firstChar) {
+        this.guessedWord = this.guessedWord.concat(firstChar)
+      } else {
+        this.guessedWord = this.guessedWord.concat(" ")
+      }
+    }
+  }
+
+  setInitialRemainingWord() {
     for (let i = 0; i < this.word.length; i++) {
       if (this.guessedWord[i] == this.word[i]) {
         this.remainingWord = this.remainingWord.concat(" ")
@@ -60,40 +71,42 @@ export class AppComponent {
     return str.substring(0, index) + chr + str.substring(index + 1);
   }
 
-  @HostListener('window:keydown', ['$event'])
+  @HostListener('window:keypress', ['$event'])
   keyEvent(event: KeyboardEvent) {
-    console.log(event)
-    let newAndWrongGuess: boolean = true;
+    let key = event.key.toLowerCase()
+    if (/[a-z]/.test(key)) {
+      let newAndWrongGuess: boolean = true;
 
 
-    for (let i = 0; i < this.remainingWord.length; i++) { //endre til word?
-      //Correct guess?
-      if (event.key == this.remainingWord[i]) {
+      for (let i = 0; i < this.word.length; i++) { //endre til word?
+        //Correct guess?
+        if (key == this.remainingWord[i]) {
 
-        this.guessedWord = this.setCharAt(this.guessedWord, i, this.remainingWord[i])
-        this.remainingWord = this.setCharAt(this.remainingWord, i, " ")
-        newAndWrongGuess = false
+          this.guessedWord = this.setCharAt(this.guessedWord, i, this.remainingWord[i])
+          this.remainingWord = this.setCharAt(this.remainingWord, i, " ")
+          newAndWrongGuess = false
+        }
+        //Already guessed?
+        else if (key == this.guessedWord[i]) {
+
+          newAndWrongGuess = false
+        }
       }
-      //Already guessed?
-      else if (event.key == this.guessedWord[i]) {
 
-        newAndWrongGuess = false
+      //Already tried this letter?
+      for (let i = 0; i < this.triedWrongLetters.length; i++) {
+        if (key == this.triedWrongLetters[i]) {
+          newAndWrongGuess = false
+        }
       }
-    }
 
-    //Already tried this letter?
-    for (let i = 0; i < this.triedWrongLetters.length; i++) {
-      if (event.key == this.triedWrongLetters[i]) {
-        newAndWrongGuess = false
+      if (newAndWrongGuess) {
+        this.triedWrongLetters = this.triedWrongLetters.concat(key)
+        this.tryCounter++
       }
-    }
 
-    if (newAndWrongGuess) {
-      this.triedWrongLetters = this.triedWrongLetters.concat(event.key)
-      this.tryCounter++
+      this.logWords()
+      this.hasWonOrLost()
     }
-
-    this.logWords()
-    this.hasWonOrLost()
   }
 }

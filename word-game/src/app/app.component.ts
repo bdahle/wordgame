@@ -1,6 +1,7 @@
 //TODO ignorere taster som ikke er bokstaver
 //TODO virker med store bokstaver
 //TODO autogenerer initial guessedWord
+//TODO logg hvilke bokstaver som er forsoekt, skal ikke faa feil for aa gjette det samme mange ganger
 
 import { Component, ElementRef, HostListener } from '@angular/core';
 
@@ -13,8 +14,8 @@ export class AppComponent {
   constructor(private elementRef: ElementRef) { }
   title = 'word-game'
 
-  word = "hus"
-  guessedWord = "   "
+  word = "solnedgangen"
+  guessedWord = "  l   g  g  "
   remainingWord = ""
   tryCounter = 0;
 

@@ -2,6 +2,8 @@
 //TODO virker med store bokstaver
 //TODO autogenerer initial guessedWord
 //TODO logg hvilke bokstaver som er forsoekt, skal ikke faa feil for aa gjette det samme mange ganger
+//TODO vis tastatur paa skjermen? 
+//eller bare vis bokstaver som er forsoekt?
 
 import { Component, ElementRef, HostListener } from '@angular/core';
 

@@ -3,7 +3,6 @@
 //gjoer hele ordet groent naar har vunnet?
 //TODO nytt ord knapp?
 //TODO sentrer vertikalt
-//TODO flere ord, eventuelt hente eksternt
 //TODO stop from typing when has won
 //TODO bokstavne du mangler kommer opp i roedt?
 
@@ -76,7 +75,7 @@ export class AppComponent {
       this.hasGuessedWord = true
       console.log("Du vant!")
       this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor = "#5FAD41"
-    } else if (this.tryCounter >= 5) {
+    } else if (this.tryCounter >= 7) {
       console.log("Du tapte")
       this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor = "#D00000"
     }

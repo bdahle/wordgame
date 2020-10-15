@@ -121,6 +121,10 @@
               "devServerTarget": "word-game:serve:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {}
         }
       }
     }

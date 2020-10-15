@@ -5,6 +5,7 @@
 //TODO sentrer vertikalt
 //TODO flere ord, eventuelt hente eksternt
 //TODO stop from typing when has won
+//TODO bokstavne du mangler kommer opp i roedt?
 
 import { Component, ElementRef, HostListener } from '@angular/core';
 
@@ -17,7 +18,20 @@ export class AppComponent {
   constructor(private elementRef: ElementRef) { }
   title = 'word-game'
 
-  word: String = "methylamine"
+  // wordList = ['ground',
+  //   'introduce',
+  //   'junior',
+  //   'ignorance',
+  //   'psychology',
+  //   'coffin',
+  //   'grass',
+  //   'embark',
+  //   'ostracize',
+  //   'concede'];
+  words = "apology harsh chimpanzee peace prospect of colon game law lineage matter important truck letter domestic annual bulletin gradient morale extent discriminate chip stitch frequency uncle qualification productive herd unity pleasant forecast object interference flex physical relief mainstream critical message incongruous drag bishop credibility stadium belief pocket conceive boy hunter talented"
+  wordList = this.words.split(/\s+/)
+  word = this.wordList[Math.floor(Math.random() * this.wordList.length)];
+  // word: String = "methylamine"
   guessedWord: String = ""
   remainingWord: String = ""
   triedWrongLetters: String = ""

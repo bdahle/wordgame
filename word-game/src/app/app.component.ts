@@ -2,8 +2,6 @@
 //TODO flash groent naar trykker paa en bokstav man allerede har? og naar gjetter riktig, og roedt naar feil
 //gjoer hele ordet groent naar har vunnet?
 //TODO nytt ord knapp?
-//TODO sentrer vertikalt
-//TODO stop from typing when has won
 //TODO bokstavne du mangler kommer opp i roedt?
 
 import { Component, ElementRef, HostListener } from '@angular/core';
@@ -36,6 +34,30 @@ export class AppComponent {
   triedWrongLetters: String = ""
   tryCounter: number = 0;
   hasGuessedWord: boolean = false
+
+
+  myFunction() {
+    var x = document.getElementById("demo"),
+      txt = x.textContent,
+      newText = "";
+    for (var i = 0, l = txt.length; i < l; i++) {
+      newText += txt.charAt(i).fontcolor(this.getColor());
+      // newText += txt.charAt(i).blink();
+
+    }
+    x.innerHTML = newText;
+  }
+
+  getColor() {
+    var colorString = "";
+    for (var i = 0; i < 6; i++) {
+      var num = Math.floor(Math.random() * 17);
+      let hexNum = num.toString(16);
+      colorString += hexNum;
+    }
+    return colorString;
+  }
+
 
   ngOnInit(): void {
     this.setInitialGuessedWord()
